@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Forum Topics Page</title>
+    <!-- Add your CSS stylesheets and JavaScript files here -->
+  </head>
+  <body>
+    <header>
+      <h1>Browse our list of topics</h1>
+      <nav>
+        <ul>
+          <% for (let i = 0; i < topics.length; i++) { %>
+          <li><%= topics[i].topic_name %></li>
+          <% } %>
+        </ul>
+      </nav>
+    </header>
+
+    <main></main>
+
+    <footer>
+      <!-- Add your footer content here -->
+    </footer>
+  </body>
+</html>

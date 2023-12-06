@@ -1,11 +1,9 @@
-module.exports = function (app, data) {
+module.exports = function () {
   app.get("/", function (req, res) {
     res.render("index");
   });
 
   app.get("/topics", function (req, res) {
-    let sqlQuery = "SELECT * FROM topics";
-
     db.query(sqlQuery, (err, result) => {
       if (err) {
         console.log(err);

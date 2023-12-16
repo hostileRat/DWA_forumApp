@@ -13,7 +13,7 @@ app.use(express.static("public"));
 const mysql = require("mysql");
 const db = mysql.createConnection({
   host: "localhost",
-  user: "appuser",
+  user: "appuser2",
   password: "Gottagetdownonfriday2011!",
   database: "forumApp",
 });

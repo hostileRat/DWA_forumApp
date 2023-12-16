@@ -77,7 +77,7 @@ CREATE TABLE
     );
 
 -- Create a user with CRUD privileges only
-CREATE USER 'appuser' @'localhost' IDENTIFIED BY 'Gottagetdownonfriday2011!';
+CREATE USER 'appuser2' @'localhost' IDENTIFIED BY 'Gottagetdownonfriday2011!';
 
 -- Grant privileges for CRUD operations on the forum database
 GRANT
@@ -86,11 +86,11 @@ SELECT
 INSERT
 ,
 UPDATE,
-DELETE ON forumApp.* TO 'appuser' @'localhost';
+DELETE ON forumApp.* TO 'appuser2' @'localhost';
 
 -- Revoke privileges for creating and altering tables
 REVOKE CREATE,
 ALTER,
 DROP ON forumApp.*
 FROM
-    'appuser' @'localhost';
+    'appuser2' @'localhost';

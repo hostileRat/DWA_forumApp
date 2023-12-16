@@ -17,5 +17,16 @@
       <a href="/about">About</a>
     </nav>
     <!-- Display a list of forum users here -->
+    <main>
+      <ul>
+        <% if(users.length > 0){ %> <% users.forEach(user => { %>
+        <li>
+          <h3><%= user.username %></h3>
+        </li>
+        <% }); %> <% } else { %>
+        <p>No users found.</p>
+        <% } %>
+      </ul>
+    </main>
   </body>
 </html>

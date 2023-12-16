@@ -14,6 +14,8 @@ router.get("/about", (req, res) => {
 });
 
 router.get("/topics", (req, res) => {
+  const query = "SELECT * FROM topics;";
+
   db.query(query, (err, result) => {
     if (err) {
       console.log(err);
@@ -29,11 +31,42 @@ router.get("/topics", (req, res) => {
 });
 
 router.get("/users", (req, res) => {
-  res.render("users.ejs");
+  const query = "SELECT * FROM users;";
+
+  db.query(query, (err, result) => {
+    if (err) {
+      console.log(err);
+      res.redirect("/");
+    }
+
+    console.log(result);
+
+    let users = result;
+
+    res.render("users.ejs", { users });
+  });
 });
 
 router.get("/search", (req, res) => {
   res.render("search.ejs");
+});
+
+router.get("/search-result", async (req, res) => {
+  const keywords = req.query.keywords;
+  const query =
+    "SELECT posts.*, topics.topic_name, users.username FROM posts JOIN topics ON posts.topic_id = topics.topic_id JOIN users ON posts.user_id = users.user_id WHERE title LIKE ? OR content LIKE ?";
+  db.query(query, [`%${keywords}%`, `%${keywords}%`], (err, result) => {
+    if (err) {
+      console.log(err);
+      res.redirect("./");
+    }
+
+    console.log(result);
+
+    let results = result;
+
+    res.render("search-results.ejs", { results, keywords });
+  });
 });
 
 router.get("/posts", (req, res) => {
@@ -53,6 +86,7 @@ router.get("/posts", (req, res) => {
     res.render("posts.ejs", { posts });
   });
 });
+
 router.get("/add-post", (req, res) => {
   let topicsQuery = "SELECT topic_id, topic_name FROM topics";
   let usersQuery = "SELECT user_id, username FROM users";

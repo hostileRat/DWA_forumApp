@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Forum App - Topics</title>
+  </head>
+  <body>
+    <h1>Forum Topics</h1>
+    <nav>
+      <a href="/">Home</a>
+      <a href="/topics">Topics</a>
+      <a href="/users">Users</a>
+      <a href="/posts">Posts</a>
+      <a href="/add-post">Add Post</a>
+      <a href="/search">Search</a>
+      <a href="/about">About</a>
+    </nav>
+    <!-- Display a list of forum topics here -->
+    <main>
+      <ul>
+        <% if(topics.length > 0){ %> <% topics.forEach(topic => { %>
+        <li>
+          <h3><%= topic.topic_name %></h3>
+        </li>
+        <% }); %> <% } else { %>
+        <p>No topics available.</p>
+        <% } %>
+      </ul>
+    </main>
+  </body>
+</html>

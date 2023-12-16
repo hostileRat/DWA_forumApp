@@ -1,56 +1,49 @@
 const express = require("express");
-const bodyParser = require("body-parser");
 const session = require("express-session");
-const ejs = require("ejs");
-const mysql = require("mysql2");
-
-// Initialise app
 const app = express();
 const port = 8000;
+const ejs = require("ejs");
+const passport = require("./passport-config.js");
 
-// Body parser middleware to handle POST request data
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(bodyParser.json());
+app.set("view engine", "ejs");
+app.use(express.urlencoded({ extended: true }));
+app.use(express.static("public"));
 
-// Express session middleware
+// MySQL Connection Setup
+const mysql = require("mysql");
+const db = mysql.createConnection({
+  host: "localhost",
+  user: "appuser",
+  password: "Gottagetdownonfriday2011!",
+  database: "forumApp",
+});
+
+db.connect((err) => {
+  if (err) {
+    console.log("Error connecting to MySQL:", err);
+  } else {
+    console.log("MySQL connected");
+  }
+});
+
+// Make accessible everywhere
+global.db = db;
+
+// Handle routes
+const routes = require("./routes/main.js");
+app.use("/", routes);
+
 app.use(
   session({
     secret: "your-secret-key",
-    resave: true,
-    saveUninitialized: true,
+    resave: false,
+    saveUninitialized: false,
   })
 );
+app.use(passport.initialize());
+app.use(passport.session());
 
-const db = mysql.createConnection({
-  host: "localhost",
-  user: "root",
-  password: "root",
-  database: "forum_app",
-});
-
-// Connect to the database
-db.connect((err) => {
-  if (err) {
-    throw err;
-  }
-  console.log("Connected to database");
-});
-global.db = db; // Making the database connection available globally
-
-// Set up basic route
-app.get("/", (req, res) => {
-  res.send("Welcome to the Forum App!");
-});
-
-const authRoutes = require("./routes/auth");
-const forumsRoutes = require("./routes/forums");
-const threadsRoutes = require("./routes/threads");
-
-// Use routes
-app.use("/auth", authRoutes);
-app.use("/forums", forumsRoutes);
-app.use("/threads", threadsRoutes);
-
+// Start the server
 app.listen(port, () => {
-  console.log(`Server running at port ${port}`);
+  console.log(`Server is running on http://localhost:${port}`);
 });

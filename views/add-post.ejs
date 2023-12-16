@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Forum App - Add Post</title>
+  </head>
+  <body>
+    <h1>Add a New Post</h1>
+    <nav>
+      <a href="/">Home</a>
+      <a href="/topics">Topics</a>
+      <a href="/users">Users</a>
+      <a href="/posts">Posts</a>
+      <a href="/add-post">Add Post</a>
+      <a href="/search">Search</a>
+      <a href="/about">About</a>
+    </nav>
+    <!-- Form for adding a new post goes here -->
+    <form action="/added" method="POST">
+      <label for="title">Title:</label>
+      <input type="text" id="title" name="title" required>
+  
+      <label for="content">Content:</label>
+      <textarea id="content" name="content" required></textarea>
+  
+      <label for="topic">Select Topic:</label>
+      <select id="topic" name="topic" required>
+        <!-- Populate this dropdown with available topics -->
+        <% topics.forEach(topic => { %>
+            <option value="<%= topic.topic_id %>"><%= topic.topic_name %></option>
+          <% }) %>             
+      </select>
+      <select id="user" name="user" required>
+        <!-- Populate this dropdown with available users -->
+        <% users.forEach(user => { %>
+          <option value="<%= user.user_id %>"><%= user.username %></option>
+        <% }) %>             
+      </select>
+      <button type="submit">Submit</button>
+  </body>
+</html>

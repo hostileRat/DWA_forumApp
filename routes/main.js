@@ -141,22 +141,68 @@ router.post("/added", (req, res) => {
   const userId = req.session.user.user_id;
   console.log(userId);
 
-  // Insert the new post into the database
-  const insertQuery =
-    "INSERT INTO posts (user_id, title, content, topic_id) VALUES (?,?, ?, ?)";
-  const values = [userId, title, content, topicId];
+  // Check user can post into the topic:
+  const checkQuery =
+    "SELECT * FROM user_topic WHERE user_id = ? AND topic_id = ?";
 
-  db.query(insertQuery, values, (err, result) => {
+  db.query(checkQuery, [userId, topicId], (err, result) => {
     if (err) {
       console.error("Error inserting post:", err);
       res.status(500).send("Internal Server Error");
       return;
     }
 
-    console.log("New post added with ID:", result.insertId);
+    if (result.length > 0) {
+      // Insert the new post into the database
+      const insertQuery =
+        "INSERT INTO posts (user_id, title, content, topic_id) VALUES (?,?, ?, ?);";
+      const values = [userId, title, content, topicId];
 
-    // Redirect to the posts page or display a confirmation
-    res.redirect("/posts");
+      db.query(insertQuery, values, (err, result) => {
+        if (err) {
+          console.error("Error inserting post:", err);
+          res.status(500).send("Internal Server Error");
+          return;
+        }
+
+        console.log("New post added with ID:", result.insertId);
+
+        // Redirect to the posts page or display a confirmation
+        res.redirect("/posts");
+      });
+    } else res.send("User not allowed to post in this topic");
+  });
+});
+
+router.post("/join/:topicId", (req, res) => {
+  const query = "INSERT INTO user_topic (user_id, topic_id) VALUES (?,?);";
+  const values = [req.session.user.user_id, req.params.topicId];
+
+  db.query(query, values, (err, result) => {
+    if (err) {
+      console.error("Error joining topic", err);
+      res.status(500).send("Internal server error");
+    }
+    res.send("Successfully joined topic");
+  });
+});
+
+router.get("/topic/:topicId", (req, res) => {
+  const query =
+    "SELECT posts.*, topics.topic_name, users.username FROM posts JOIN topics ON posts.topic_id = topics.topic_id JOIN users ON posts.user_id = users.user_id WHERE posts.topic_id = ?;";
+
+  db.query(query, [req.params.topicId], (err, result) => {
+    if (err) {
+      console.error("Error joining topic", err);
+      res.status(500).send("Internal server error");
+    }
+
+    if (result.length > 0) {
+      let posts = result;
+      res.render("topic.ejs", { posts });
+    } else {
+      res.send("No matching posts");
+    }
   });
 });
 

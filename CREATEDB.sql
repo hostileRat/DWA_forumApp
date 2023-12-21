@@ -2,95 +2,46 @@ CREATE DATABASE forumApp;
 
 USE forumApp;
 
--- Users Table
 CREATE TABLE
-    users (
-        user_id INT AUTO_INCREMENT PRIMARY KEY,
-        username VARCHAR(255) NOT NULL,
-        email VARCHAR(255) NOT NULL,
-        password_hash VARCHAR(255) NOT NULL
-        -- Add any other user-related fields as needed
+    `POSTS` (
+        `post_id` int NOT NULL AUTO_INCREMENT,
+        `user_id` int DEFAULT NULL,
+        `topic_id` int DEFAULT NULL,
+        `title` varchar(255) NOT NULL,
+        `content` text NOT NULL,
+        `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+        PRIMARY KEY (`post_id`),
+        KEY `user_id` (`user_id`),
+        KEY `topic_id` (`topic_id`),
+        CONSTRAINT `posts_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`),
+        CONSTRAINT `posts_ibfk_2` FOREIGN KEY (`topic_id`) REFERENCES `topics` (`topic_id`)
     );
 
--- Sessions Table
 CREATE TABLE
-    sessions (
-        session_id INT AUTO_INCREMENT PRIMARY KEY,
-        user_id INT,
-        session_token VARCHAR(255) NOT NULL,
-        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-        FOREIGN KEY (user_id) REFERENCES users (user_id)
+    `TOPICS` (
+        `topic_id` int NOT NULL AUTO_INCREMENT,
+        `topic_name` varchar(255) NOT NULL,
+        PRIMARY KEY (`topic_id`)
     );
 
--- Topics Table
 CREATE TABLE
-    topics (
-        topic_id INT AUTO_INCREMENT PRIMARY KEY,
-        topic_name VARCHAR(255) NOT NULL
-        -- Add any other topic-related fields as needed
+    `USERS` (
+        `user_id` int NOT NULL AUTO_INCREMENT,
+        `username` varchar(255) NOT NULL,
+        `password_hash` varchar(255) NOT NULL,
+        PRIMARY KEY (`user_id`)
     );
 
--- Posts Table
 CREATE TABLE
-    posts (
-        post_id INT AUTO_INCREMENT PRIMARY KEY,
-        user_id INT,
-        topic_id INT,
-        title VARCHAR(255) NOT NULL,
-        content TEXT NOT NULL,
-        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-        parent_post_id INT,
-        FOREIGN KEY (user_id) REFERENCES users (user_id),
-        FOREIGN KEY (topic_id) REFERENCES topics (topic_id),
-        FOREIGN KEY (parent_post_id) REFERENCES posts (post_id)
-        -- Add any other post-related fields as needed
+    `USER_TOPIC` (
+        `user_id` int NOT NULL,
+        `topic_id` int NOT NULL,
+        PRIMARY KEY (`user_id`, `topic_id`),
+        KEY `topic_id` (`topic_id`),
+        CONSTRAINT `user_topic_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`),
+        CONSTRAINT `user_topic_ibfk_2` FOREIGN KEY (`topic_id`) REFERENCES `topics` (`topic_id`)
     );
 
--- Replies Table
-CREATE TABLE
-    replies (
-        reply_id INT AUTO_INCREMENT PRIMARY KEY,
-        user_id INT,
-        post_id INT,
-        content TEXT NOT NULL,
-        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-        FOREIGN KEY (user_id) REFERENCES users (user_id),
-        FOREIGN KEY (post_id) REFERENCES posts (post_id)
-        -- Add any other reply-related fields as needed
-    );
-
--- Tags Table
-CREATE TABLE
-    tags (
-        tag_id INT AUTO_INCREMENT PRIMARY KEY,
-        tag_name VARCHAR(50) NOT NULL UNIQUE
-    );
-
--- PostTags Table
-CREATE TABLE
-    post_tags (
-        post_id INT,
-        tag_id INT,
-        PRIMARY KEY (post_id, tag_id),
-        FOREIGN KEY (post_id) REFERENCES posts (post_id),
-        FOREIGN KEY (tag_id) REFERENCES tags (tag_id)
-    );
-
--- Create a user with CRUD privileges only
 CREATE USER 'appuser2' @'localhost' IDENTIFIED BY 'Gottagetdownonfriday2011!';
 
--- Grant privileges for CRUD operations on the forum database
-GRANT
-SELECT
-,
-INSERT
-,
-UPDATE,
-DELETE ON forumApp.* TO 'appuser2' @'localhost';
-
--- Revoke privileges for creating and altering tables
-REVOKE CREATE,
-ALTER,
-DROP ON forumApp.*
-FROM
-    'appuser2' @'localhost';
+GRANT ALL PRIVILEGES TO 'appuser2' @'localhost';

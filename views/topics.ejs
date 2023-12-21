@@ -21,9 +21,9 @@
       <ul>
         <% if(topics.length > 0){ %> <% topics.forEach(topic => { %>
         <li>
-          <h3><%= topic.topic_name %></h3>
+          <h3><a href="/topic/<%= topic.topic_id%>"><%= topic.topic_name %><a></h3>
         </li>
-        <form action=`/join` method="post">
+        <form action="join/<%= topic.topic_id%>" method="post">
           <button type="submit">Join this topic!</button>
         </form>
         <% }); %> <% } else { %>

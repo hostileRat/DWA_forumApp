@@ -1,12 +1,22 @@
 const express = require("express");
 const router = express.Router();
 
+function ensureAuthenticated(req, res, next) {
+  if (req.session && req.session.user) {
+    // If the user is authenticated, proceed to the next middleware or route handler
+    console.log(req.session.user);
+    return next();
+  } else {
+    // If the user is not authenticated, redirect to the login page
+    res.redirect("/auth/login");
+  }
+}
 // Handle authentication routes
 const auth = require("./auth.js");
 router.use("/auth", auth);
 
 router.get("/", (req, res) => {
-  res.render("home.ejs");
+  res.render("home.ejs", { user: req.session.user });
 });
 
 router.get("/about", (req, res) => {
@@ -87,7 +97,7 @@ router.get("/posts", (req, res) => {
   });
 });
 
-router.get("/add-post", (req, res) => {
+router.get("/add-post", ensureAuthenticated, (req, res) => {
   let topicsQuery = "SELECT topic_id, topic_name FROM topics";
   let usersQuery = "SELECT user_id, username FROM users";
 
@@ -128,7 +138,8 @@ router.post("/added", (req, res) => {
   const title = req.body.title;
   const content = req.body.content;
   const topicId = req.body.topic;
-  const userId = req.body.user;
+  const userId = req.session.user.user_id;
+  console.log(userId);
 
   // Insert the new post into the database
   const insertQuery =

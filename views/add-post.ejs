@@ -31,12 +31,6 @@
             <option value="<%= topic.topic_id %>"><%= topic.topic_name %></option>
           <% }) %>             
       </select>
-      <select id="user" name="user" required>
-        <!-- Populate this dropdown with available users -->
-        <% users.forEach(user => { %>
-          <option value="<%= user.user_id %>"><%= user.username %></option>
-        <% }) %>             
-      </select>
       <button type="submit">Submit</button>
   </body>
 </html>

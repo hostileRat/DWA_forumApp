@@ -3,7 +3,6 @@ const session = require("express-session");
 const app = express();
 const port = 8000;
 const ejs = require("ejs");
-const passport = require("./passport-config.js");
 
 app.set("view engine", "ejs");
 app.use(express.urlencoded({ extended: true }));
@@ -26,12 +25,7 @@ db.connect((err) => {
   }
 });
 
-// Make accessible everywhere
 global.db = db;
-
-// Handle routes
-const routes = require("./routes/main.js");
-app.use("/", routes);
 
 app.use(
   session({
@@ -40,8 +34,10 @@ app.use(
     saveUninitialized: false,
   })
 );
-app.use(passport.initialize());
-app.use(passport.session());
+
+// Handle routes
+const routes = require("./routes/main.js");
+app.use("/", routes);
 
 // Start the server
 app.listen(port, () => {

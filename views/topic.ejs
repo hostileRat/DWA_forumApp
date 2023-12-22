@@ -6,18 +6,14 @@
   <body>
     <h1>posts</h1>
     <nav>
-        <a href="/">Home</a>
-        <a href="/topics">Topics</a>
-        <a href="/users">Users</a>
-        <a href="/posts">Posts</a>
-        <a href="/add-post">Add Post</a>
-        <a href="/search">Search</a>
-        <a href="/about">About</a>
-        <% if (!user) { %>
-        <a href="/auth/register">Register</a>
-        <% } else { %>
-        <a href="/auth/logout">Logout</a>
-        <% } %>
+      <a href="/">Home</a>
+      <a href="/topics">Topics</a>
+      <a href="/users">Users</a>
+      <a href="/posts">Posts</a>
+      <a href="/add-post">Add Post</a>
+      <a href="/search">Search</a>
+      <a href="/about">About</a>
+    </nav>
 
     <% posts.forEach(post => { %>
     <div

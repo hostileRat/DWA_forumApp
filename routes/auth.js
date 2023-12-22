@@ -46,7 +46,6 @@ router.post("/login", (req, res, next) => {
 
         // Check the password using bcrypt
         const passwordMatch = await checkPassword(password, user.password_hash);
-        console.log(passwordMatch);
 
         if (passwordMatch) {
           // Set the user in the session
@@ -66,7 +65,7 @@ router.post("/login", (req, res, next) => {
 router.get("/logout", (req, res) => {
   // Destroy the session to log out the user
   req.session.destroy();
-  res.redirect("./");
+  res.redirect("../");
 });
 
 // Display login form

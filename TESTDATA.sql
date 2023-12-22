@@ -2,9 +2,18 @@
 INSERT INTO
     users (username, password_hash)
 VALUES
-    ('john_doe', 'hashed_password_1'),
-    ('alice_smith', 'hashed_password_2'),
-    ('bob_jones', 'hashed_password_3');
+    (
+        'john_doe',
+        '$2b$10$gDjOwcFupFGOFjkPvK7duuOVCzLfMz5dzuKK55QYxQi.i8CxyfoIW'
+    ),
+    (
+        'alice_smith',
+        '$2b$10$mxe0jw9H0paaL5kYuWgEbuB9noVSVQ2TvpXWrnaRgjbMFUQ39tY8K'
+    ),
+    (
+        'bob_jones',
+        '$2b$10$LtNKXs75h5dkQs1rxT4JXuLIxwlGtUvauobrB6Q1aZnDohO32flkK'
+    );
 
 -- Insert test data into 'topics' table
 INSERT INTO

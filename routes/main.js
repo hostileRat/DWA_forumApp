@@ -37,9 +37,6 @@ router.get("/topics", ensureAuthenticated, (req, res) => {
       console.log(err);
       res.redirect("/");
     }
-
-    console.log(result);
-
     let topics = result;
 
     res.render("topics.ejs", { topics });
@@ -55,8 +52,6 @@ router.get("/users", (req, res) => {
       console.log(err);
       res.redirect("/");
     }
-
-    console.log(result);
 
     let users = result;
 
@@ -80,8 +75,6 @@ router.get("/search-result", async (req, res) => {
       res.redirect("./");
     }
 
-    console.log(result);
-
     let results = result;
 
     res.render("search-results.ejs", { results, keywords });
@@ -98,8 +91,6 @@ router.get("/posts", (req, res) => {
       console.log(err);
       res.redirect("./");
     }
-
-    console.log(result);
 
     let posts = result;
 

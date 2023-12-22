@@ -42,6 +42,6 @@ CREATE TABLE
         CONSTRAINT `user_topic_ibfk_2` FOREIGN KEY (`topic_id`) REFERENCES `topics` (`topic_id`)
     );
 
-CREATE USER 'appuser2' @'localhost' IDENTIFIED BY 'Gottagetdownonfriday2011!';
+CREATE USER 'appuser2'@'localhost' IDENTIFIED BY 'Gottagetdownonfriday2011!';
 
 GRANT ALL PRIVILEGES TO 'appuser2' @'localhost';

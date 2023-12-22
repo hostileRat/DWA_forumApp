@@ -3,7 +3,7 @@ CREATE DATABASE forumApp;
 USE forumApp;
 
 CREATE TABLE
-    `POSTS` (
+    `posts` (
         `post_id` int NOT NULL AUTO_INCREMENT,
         `user_id` int DEFAULT NULL,
         `topic_id` int DEFAULT NULL,
@@ -18,14 +18,14 @@ CREATE TABLE
     );
 
 CREATE TABLE
-    `TOPICS` (
+    `topics` (
         `topic_id` int NOT NULL AUTO_INCREMENT,
         `topic_name` varchar(255) NOT NULL,
         PRIMARY KEY (`topic_id`)
     );
 
 CREATE TABLE
-    `USERS` (
+    `users` (
         `user_id` int NOT NULL AUTO_INCREMENT,
         `username` varchar(255) NOT NULL,
         `password_hash` varchar(255) NOT NULL,
@@ -33,7 +33,7 @@ CREATE TABLE
     );
 
 CREATE TABLE
-    `USER_TOPIC` (
+    `user_topic` (
         `user_id` int NOT NULL,
         `topic_id` int NOT NULL,
         PRIMARY KEY (`user_id`, `topic_id`),

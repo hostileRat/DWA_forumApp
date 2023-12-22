@@ -1,3 +1,5 @@
+// This file contains the main routes for the forum application
+
 const express = require("express");
 const router = express.Router();
 
@@ -11,18 +13,22 @@ function ensureAuthenticated(req, res, next) {
     res.redirect("./auth/login");
   }
 }
+
 // Handle authentication routes
 const auth = require("./auth.js");
 router.use("/auth", auth);
 
+// Home route
 router.get("/", (req, res) => {
   res.render("home.ejs", { user: req.session.user });
 });
 
+// About route
 router.get("/about", (req, res) => {
   res.render("about.ejs");
 });
 
+// Topics route
 router.get("/topics", ensureAuthenticated, (req, res) => {
   const query = "SELECT * FROM topics;";
 
@@ -40,6 +46,7 @@ router.get("/topics", ensureAuthenticated, (req, res) => {
   });
 });
 
+// Users route
 router.get("/users", (req, res) => {
   const query = "SELECT * FROM users;";
 
@@ -57,10 +64,12 @@ router.get("/users", (req, res) => {
   });
 });
 
+// Search route
 router.get("/search", (req, res) => {
   res.render("search.ejs");
 });
 
+// Search result route
 router.get("/search-result", async (req, res) => {
   const keywords = req.query.keywords;
   const query =
@@ -79,6 +88,7 @@ router.get("/search-result", async (req, res) => {
   });
 });
 
+// Posts route
 router.get("/posts", (req, res) => {
   let query =
     "SELECT posts.*, topics.topic_name, users.username FROM posts JOIN topics ON posts.topic_id = topics.topic_id JOIN users ON posts.user_id = users.user_id;";
@@ -97,6 +107,7 @@ router.get("/posts", (req, res) => {
   });
 });
 
+// Add post route
 router.get("/add-post", ensureAuthenticated, (req, res) => {
   let topicsQuery = "SELECT topic_id, topic_name FROM topics";
   let usersQuery = "SELECT user_id, username FROM users";
@@ -134,6 +145,7 @@ router.get("/add-post", ensureAuthenticated, (req, res) => {
     });
 });
 
+// Added post route
 router.post("/added", (req, res) => {
   const title = req.body.title;
   const content = req.body.content;
@@ -174,6 +186,7 @@ router.post("/added", (req, res) => {
   });
 });
 
+// Join topic route
 router.post("/join/:topicId", (req, res) => {
   const query = "INSERT INTO user_topic (user_id, topic_id) VALUES (?,?);";
   const values = [req.session.user.user_id, req.params.topicId];
@@ -187,6 +200,7 @@ router.post("/join/:topicId", (req, res) => {
   });
 });
 
+// Topic route
 router.get("/topic/:topicId", (req, res) => {
   const query =
     "SELECT posts.*, topics.topic_name, users.username FROM posts JOIN topics ON posts.topic_id = topics.topic_id JOIN users ON posts.user_id = users.user_id WHERE posts.topic_id = ?;";

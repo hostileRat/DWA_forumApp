@@ -1,10 +1,21 @@
+// Import required modules
 const express = require("express");
 const session = require("express-session");
 const router = express.Router();
 const bcrypt = require("bcrypt");
 
-let x = hashPassword("password1");
+// Hash the user's password before saving it to the database
+function hashPassword(password) {
+  const saltRounds = 10;
+  return bcrypt.hash(password, saltRounds);
+}
 
+// Check the provided password against the hashed password in the database
+async function checkPassword(password, hashedPassword) {
+  return await bcrypt.compare(password, hashedPassword);
+}
+
+// Middleware to ensure user authentication
 function ensureAuthenticated(req, res, next) {
   if (req.session && req.session.user) {
     // If the user is authenticated, proceed to the next middleware or route handler
@@ -19,6 +30,7 @@ function ensureAuthenticated(req, res, next) {
 router.post("/login", (req, res, next) => {
   const { username, password } = req.body;
 
+  // Query the database to find the user with the provided username
   db.query(
     "SELECT * FROM users WHERE username = ?",
     [username],
@@ -52,8 +64,9 @@ router.post("/login", (req, res, next) => {
 
 // Logout route
 router.get("/logout", (req, res) => {
+  // Destroy the session to log out the user
   req.session.destroy();
-  res.redirect("/");
+  res.redirect("./");
 });
 
 // Display login form
@@ -61,6 +74,7 @@ router.get("/login", (req, res) => {
   res.render("login.ejs");
 });
 
+// Register route
 router.post("/register", async (req, res) => {
   const { username, password } = req.body;
 
@@ -87,19 +101,10 @@ router.post("/register", async (req, res) => {
   }
 });
 
+// Display registration form
 router.get("/register", (req, res) => {
   res.render("register.ejs");
 });
 
-// Hash the user's password before saving it to the database
-function hashPassword(password) {
-  const saltRounds = 10;
-  return bcrypt.hash(password, saltRounds);
-}
-
-// Check the provided password against the hashed password in the database
-async function checkPassword(password, hashedPassword) {
-  return await bcrypt.compare(password, hashedPassword);
-}
-
+// Export the router
 module.exports = router;

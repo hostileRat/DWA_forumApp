@@ -8,7 +8,7 @@ function ensureAuthenticated(req, res, next) {
     return next();
   } else {
     // If the user is not authenticated, redirect to the login page
-    res.redirect("/auth/login");
+    res.redirect("./auth/login");
   }
 }
 // Handle authentication routes
@@ -168,7 +168,7 @@ router.post("/added", (req, res) => {
         console.log("New post added with ID:", result.insertId);
 
         // Redirect to the posts page or display a confirmation
-        res.redirect("/posts");
+        res.redirect("./posts");
       });
     } else res.send("User not allowed to post in this topic");
   });

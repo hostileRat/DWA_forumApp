@@ -3,6 +3,21 @@ CREATE DATABASE forumApp;
 USE forumApp;
 
 CREATE TABLE
+    `users` (
+        `user_id` int NOT NULL AUTO_INCREMENT,
+        `username` varchar(255) NOT NULL,
+        `password_hash` varchar(255) NOT NULL,
+        PRIMARY KEY (`user_id`)
+    );
+
+CREATE TABLE
+    `topics` (
+        `topic_id` int NOT NULL AUTO_INCREMENT,
+        `topic_name` varchar(255) NOT NULL,
+        PRIMARY KEY (`topic_id`)
+    );
+
+CREATE TABLE
     `posts` (
         `post_id` int NOT NULL AUTO_INCREMENT,
         `user_id` int DEFAULT NULL,
@@ -15,21 +30,6 @@ CREATE TABLE
         KEY `topic_id` (`topic_id`),
         CONSTRAINT `posts_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`),
         CONSTRAINT `posts_ibfk_2` FOREIGN KEY (`topic_id`) REFERENCES `topics` (`topic_id`)
-    );
-
-CREATE TABLE
-    `topics` (
-        `topic_id` int NOT NULL AUTO_INCREMENT,
-        `topic_name` varchar(255) NOT NULL,
-        PRIMARY KEY (`topic_id`)
-    );
-
-CREATE TABLE
-    `users` (
-        `user_id` int NOT NULL AUTO_INCREMENT,
-        `username` varchar(255) NOT NULL,
-        `password_hash` varchar(255) NOT NULL,
-        PRIMARY KEY (`user_id`)
     );
 
 CREATE TABLE

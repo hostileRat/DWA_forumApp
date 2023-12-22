@@ -23,7 +23,7 @@ router.get("/about", (req, res) => {
   res.render("about.ejs");
 });
 
-router.get("/topics", (req, res) => {
+router.get("/topics", ensureAuthenticated, (req, res) => {
   const query = "SELECT * FROM topics;";
 
   db.query(query, (err, result) => {

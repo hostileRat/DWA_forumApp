@@ -15,7 +15,11 @@
       <a href="/add-post">Add Post</a>
       <a href="/search">Search</a>
       <a href="/about">About</a>
-    </nav>
+      <% if (!user) { %>
+      <a href="/auth/register">Register</a>
+      <% } else { %>
+      <a href="/auth/logout">Logout</a>
+      <% } %>
     <!-- Display a list of forum topics here -->
     <main>
       <ul>
